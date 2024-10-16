@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>navbar</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+          <!-- Logo/Brand -->
+          <a class="navbar-brand" href="{% url 'home' %}">
+            <img src="{% static 'images/logo1.webp' %}" alt="" height="40"> <!-- Replace with your logo -->
+            Hotel Management System
+          </a>
+      
+          <!-- Toggler for Mobile View -->
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+      
+          <!-- Navbar Links -->
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              <!-- Home -->
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+              </li>
+      
+              <!-- Rooms -->
+              <li class="nav-item">
+                <!-- Conditionally show 'Rooms' link based on user authentication -->
+                {% if user.is_authenticated %}
+                  <a class="nav-link" href="{% url 'login' %}">Rooms</a>
+                {% else %}
+                  <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#authModal">Rooms</a>
+                {% endif %}
+              </li>
+              
+      
+              <!-- Book Now -->
+              <li class="nav-item">
+                
+                    <a class="nav-link btn btn-primary text-white px-4" href="{% url 'signup' %}">Book Now</a>  <!-- Redirect to signup -->
+                
+            </li>
+            
+      
+              <!-- About -->
+              <li class="nav-item">
+                <a class="nav-link" href="#about">About Us</a>
+              </li>
+      
+              <!-- Events -->
+              <li class="nav-item">
+                <a class="nav-link" href="#events">Events</a>
+              </li>
+      
+              <!-- Contact -->
+              <li class="nav-item">
+                <a class="nav-link" href="#contact">Contact Us</a>
+              </li>
+      
+              <!-- Login/Register -->
+              <li class="nav-item">
+                <a class="nav-link btn btn-outline-light" href="{% url 'login' %}">Login</a> <!-- Add URL for login -->
+              </li>
+              <li class="nav-item">
+                <a class="nav-link btn btn-success ms-2 text-white" href="{% url 'signup' %}">Sign Up</a> <!-- Add URL for signup -->
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      
+      
+</body>
+</html>

@@ -1,0 +1,117 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>My Dashboard</h2>
+
+        <!-- Bookings Section -->
+        <section>
+            <h3>Your Bookings</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Room</th>
+                        <th>Check-In Date</th>
+                        <th>Check-Out Date</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td>{{ booking.room.get_room_type_display }}</td>
+                        <td>{{ booking.check_in_date }}</td>
+                        <td>{{ booking.check_out_date }}</td>
+                        <td>KSh {{ booking.total_price }}</td>
+                        <td>
+                            <a href="{% url 'cancel_booking' booking.id %}">Cancel</a>
+                            <a class="receipt-button" href="{% url 'generate_receipt' booking.id %}">Generate Receipt</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5">No bookings yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Available Rooms Section -->
+        <section>
+            <h3>Available Rooms</h3>
+            <ul>
+                {% for room in available_rooms %}
+                    <li>
+                        {{ room.get_room_type_display }} - KSh {{ room.price_per_night }}/night
+                        <a href="{% url 'book_room' room.id %}">Book Now</a>
+                    </li>
+                {% empty %}
+                    <li>No rooms available at the moment.</li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <!-- Billing and Payment History Section -->
+        <section>
+            <h3>Billing and Payment History</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Booking</th>
+                        <th>Amount</th>
+                        <th>Payment Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for billing in billings %}
+                    <tr>
+                        <td>{{ billing.booking.room.get_room_type_display }} ({{ billing.booking.check_in_date }} - {{ billing.booking.check_out_date }})</td>
+                        <td>KSh {{ billing.amount }}</td>
+                        <td>{{ billing.payment_date }}</td>
+                        <td>{{ billing.status }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4">No billing records found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Chat Section -->
+        <section class="chat-container">
+            <h3>Chat with Admin</h3>
+            <div class="chat-box">
+                {% for message in messages %}
+                    <div class="chat-message">
+                        {% if message.is_admin %}
+                            <strong>Admin</strong>: {{ message.message }}
+                        {% else %}
+                            <strong>{{ message.user.username }}</strong>: {{ message.message }}
+                        {% endif %}
+                        <br><small>{{ message.created_at }}</small>
+                    </div>
+                {% empty %}
+                    <p>No messages yet.</p>
+                {% endfor %}
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+                <input type="text" name="message" placeholder="Type your message..." required>
+                <button type="submit">Send</button>
+            </form>
+        </section>
+    </div>
+</body>
+</html>
