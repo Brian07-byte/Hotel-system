@@ -122,7 +122,7 @@ def process_payment(request, booking_id):
             booking=booking,
             amount=payment_amount,
             payment_method=payment_method,
-            payment_status='pending',  # Initially set to pending
+            payment_status='paid',  # Initially set to pending
             payment_reference=payment_reference,
         )
 
@@ -152,31 +152,25 @@ class PaymentSuccessView(View):
 # User dashboard
 @login_required
 def dashboard(request):
-    if request.method == 'POST':
-        # Handle form submission for message
-        message_content = request.POST.get('message')
-        if message_content:
-            Message.objects.create(user=request.user, message=message_content, is_admin=False)  # User message
-        return redirect('admin_dashboard')  # Redirect to avoid form resubmission
-    
-    # Fetch user messages (both from the user and the admin)
-    messages = Message.objects.filter(user=request.user).order_by('created_at')
-    
-    # Fetch bookings, available rooms, and billing information
-    bookings = Booking.objects.filter(user=request.user)
-    available_rooms = Room.objects.all()  # Assuming you are displaying all available rooms
-    billings = Billing.objects.filter(user=request.user)
+    user = request.user
+    bookings = Booking.objects.filter(user=user)
+    payments = Payment.objects.filter(booking__user=user)
+    chat_messages = ChatMessage.objects.filter(user=user)
 
-    # Context for rendering the dashboard template
+    # Add user_type attribute to chat messages
+    for message in chat_messages:
+        message.user_type = 'admin' if message.is_admin else 'user'
+
+    rooms = Room.objects.all()  # Or filter by availability if needed
+
     context = {
         'bookings': bookings,
-        'available_rooms': available_rooms,
-        'billings': billings,
-        'messages': messages
+        'payments': payments,
+        'chat_messages': chat_messages,  # Ensure this is the right variable
+        'rooms': rooms,
     }
-    
-    # Render the user dashboard
     return render(request, 'dashboard.html', context)
+
 # Cancel booking
 @login_required
 def cancel_booking(request, booking_id):

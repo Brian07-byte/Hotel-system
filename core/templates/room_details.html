@@ -1,3 +1,4 @@
+{% extends 'base.html' %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -6,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ room.get_room_type_display }} Details</title>
     <link rel="stylesheet" href="{% static 'css/rooms.css' %}">
+    {% block content%}
     <style>
         /* Inline CSS for navbar styling and page layout */
         body {
@@ -127,5 +129,6 @@
         <a class="btn btn-success" href="{% url 'book_room' room.id %}">Book Now</a>
 
     </div>
+    {% endblock %}
 </body>
 </html>
