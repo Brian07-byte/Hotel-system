@@ -11,7 +11,7 @@ from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 
-from .models import Message
+
 # Home view
 def home(request):
     return render(request, 'home.html')
@@ -26,7 +26,7 @@ def signup(request):
 
         if password != password_confirm:
             messages.error(request, "Passwords do not match.")
-            return redirect('signup')  # Redirect back to the signup page
+            return redirect('login')  # Redirect back to the signup page
 
         if User.objects.filter(username=username).exists():
             messages.error(request, "Username already exists.")
@@ -43,16 +43,16 @@ def signup(request):
 # Login view
 def login(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        username = request.POST['username']
+        password = request.POST['password']
+        
+        # Authenticate user
         user = authenticate(request, username=username, password=password)
-
         if user is not None:
             auth_login(request, user)
-            return redirect('rooms')  # Redirect to the rooms page
+            return redirect('rooms')
         else:
-            messages.error(request, "Invalid username or password.")
-
+            messages.error(request, "Invalid credentials! Please try again.")
     return render(request, 'login.html')
 
 # View available rooms
@@ -150,26 +150,40 @@ class PaymentSuccessView(View):
         return render(request, 'payment_success.html', {'payment': payment})
 
 # User dashboard
+from .models import Booking, Receipt, ChatMessage
+from django.db.models import Sum
+
 @login_required
 def dashboard(request):
-    user = request.user
-    bookings = Booking.objects.filter(user=user)
-    payments = Payment.objects.filter(booking__user=user)
-    chat_messages = ChatMessage.objects.filter(user=user)
+    # Get the current user's bookings, receipts, and chat messages
+    bookings = Booking.objects.filter(user=request.user)
+    receipts = Receipt.objects.filter(user=request.user)
+    chat_messages = ChatMessage.objects.filter(user=request.user)
 
-    # Add user_type attribute to chat messages
-    for message in chat_messages:
-        message.user_type = 'admin' if message.is_admin else 'user'
+    # Calculate total amount paid by the user
+    total_paid = Payment.objects.filter(booking__user=request.user, payment_status='completed').aggregate(total=Sum('amount'))['total'] or 0
 
-    rooms = Room.objects.all()  # Or filter by availability if needed
+    # Get payment details
+    payments = Payment.objects.filter(booking__user=request.user)
 
-    context = {
+    # Calculate total number of bookings
+    total_bookings = bookings.count()
+
+    # Aggregate check-ins and check-outs
+    checkins = bookings.values('check_in_date').distinct()
+    checkouts = bookings.values('check_out_date').distinct()
+
+    # Additional data can be added here as needed
+    return render(request, 'dashboard.html', {
         'bookings': bookings,
+        'receipts': receipts,
+        'chat_messages': chat_messages,
+        'total_paid': total_paid,
         'payments': payments,
-        'chat_messages': chat_messages,  # Ensure this is the right variable
-        'rooms': rooms,
-    }
-    return render(request, 'dashboard.html', context)
+        'total_bookings': total_bookings,
+        'checkins': checkins,
+        'checkouts': checkouts,
+    })
 
 # Cancel booking
 @login_required
@@ -183,69 +197,32 @@ def cancel_booking(request, booking_id):
         messages.error(request, 'Booking not found.')
         return redirect('dashboard')
 
-# Chat functionality
-@login_required
-def chat(request):
-    messages = ChatMessage.objects.all()  # Get all chat messages
-    if request.method == 'POST':
-        message_text = request.POST.get('message')
-        if message_text:
-            ChatMessage.objects.create(user=request.user, message=message_text)
-            messages.success(request, 'Message sent successfully.')
 
-    return render(request, 'chat.html', {'messages': messages})
-
-# Admin dashboard
-def admin_dashboard(request):
-    if request.method == 'POST':
-        # Admin can reply to a user
-        message_content = request.POST.get('message')
-        user_id = request.POST.get('user_id')  # User receiving the message
-        if message_content and user_id:
-            user = User.objects.get(id=user_id)
-            Message.objects.create(user=user, message=message_content, is_admin=True)
-        return redirect('admin_dashboard')  # Redirect to avoid form resubmission
-
-    # Fetch all data needed for the admin dashboard
-    bookings = Booking.objects.all()
-    messages = Message.objects.order_by('created_at')  # Assuming you meant Message
-    rooms = Room.objects.all()
-    billings = Billing.objects.all()
-    users = User.objects.all()
-
-    # Render the admin dashboard with the context
-    context = {
-        'bookings': bookings,
-        'messages': messages,
-        'rooms': rooms,
-        'billings': billings,
-        'users': users,
-    }
-# Cancel booking for admin
-def cancel_booking_admin(request, booking_id):
+# Cancel booking 
+def cancel_booking(request, booking_id):
+    booking = get_object_or_404(Booking, id=booking_id, user=request.user)
+    booking.is_cancelled = True
+    booking.save()
+    return redirect('dashboard')
     booking = Booking.objects.get(id=booking_id)
     booking.status = 'Cancelled'
     booking.save()
-    return redirect('admin_dashboard')
+    return redirect('dashboard')
 
-# Delete user
-def delete_user(request, user_id):
-    user = User.objects.get(id=user_id)
-    user.delete()
-    return redirect('admin_dashboard')
+def send_message(request):
+    if request.method == 'POST':
+        user_message = request.POST['user_message']
+        chat_message = ChatMessage(user=request.user, user_message=user_message, admin_message="Admin will respond soon.")
+        chat_message.save()
+    return redirect('dashboard')
 
 # Generate receipt
-def generate_receipt(request, booking_id):
-    booking = get_object_or_404(Booking, id=booking_id)
-    template_path = 'receipt.html'  # Update with your template path
-    context = {'booking': booking}
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="receipt_{booking.id}.pdf"'
-
-    template = get_template(template_path)
-    html = template.render(context)
-
-    pisa_status = pisa.CreatePDF(html, dest=response)
-    if pisa_status.err:
-        return HttpResponse('We had some errors <pre>' + html + '</pre>')
-    return response
+def download_receipt(request, receipt_id):
+    receipt = get_object_or_404(Receipt, id=receipt_id, user=request.user)
+    # Assuming the receipt is stored as a PDF or image file
+    with open(receipt.file_path, 'rb') as f:
+        response = HttpResponse(f.read(), content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="{receipt.booking.id}_receipt.pdf"'
+        return response
+    
+   

@@ -1,7 +1,8 @@
 # myapp/urls.py
 
 from django.urls import path
-from .views import available_rooms,signup,login,dashboard,generate_receipt, cancel_booking,dashboard, room_details,home,cancel_booking, book_room, booking_success,process_payment,PaymentSuccessView
+from . import views
+from .views import available_rooms,signup,login,dashboard, cancel_booking,dashboard, room_details,home,cancel_booking, book_room, booking_success,process_payment,PaymentSuccessView
 
 urlpatterns = [
     path('', home, name='home'),  # Assuming you have a home view
@@ -13,8 +14,12 @@ urlpatterns = [
     path('booking-success/', booking_success, name='booking_success'),  # URL for booking success
       path('payment/<int:booking_id>/', process_payment, name='process_payment'), 
       path('payment/success/<int:payment_id>/', PaymentSuccessView.as_view(), name='payment_success'),  # URL for payment success
-      path('dashboard/', dashboard, name='dashboard'),
-      path('cancel_booking/<int:booking_id>/', cancel_booking, name='cancel_booking'), 
+      path('dashboard/', views.dashboard, name='dashboard'),
+    path('cancel_booking/<int:booking_id>/', views.cancel_booking, name='cancel_booking'),
+    path('send_message/', views.send_message, name='send_message'),
+    path('download_receipt/<int:receipt_id>/', views.download_receipt, name='download_receipt'),
+     path('download_receipt/', views.download_receipt, name='download_all_receipts'),
+     path('download_receipt/<int:receipt_id>/', views.download_receipt, name='download_receipt'),
     path('admin/cancel_booking/<int:booking_id>/', cancel_booking, name='cancel_booking'),
-    path('generate_receipt/<int:booking_id>/', generate_receipt, name='generate_receipt'),
+    
 ]

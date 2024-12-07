@@ -1,37 +1,139 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Available Rooms</title>
-    <link rel="stylesheet" href="{% static 'css/rooms.css' %}">
-    
-</head>
-<body>
-    <header>
-        <h1>Available Rooms</h1>
-    </header>
-    <nav>
-        <a href="{% url 'home' %}">Home</a>
-        <a href="{% url 'rooms' %}">Rooms</a>
-    </nav>
-    <ul>
-        {% for room in rooms %}
-            <li>
-                <h2>{{ room.get_room_type_display }}</h2>
-                <p>{{ room.description }}</p>
-                <p>Price: KSh {{ room.price_per_night }}/night</p>
-                <p>Capacity: {{ room.capacity }} guests</p>
-                <img src="{{ room.image.url }}" alt="{{ room.get_room_type_display }}">
+{% block title%}Rooms {% endblock%}
+{% block content %}
+<style>
+    /* Grid container for room cards */
+.room-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columns, each taking equal space */
+    gap: 20px; /* Space between grid items */
+    margin: 20px;
+}
 
+/* Card Container */
+.room-card {
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    height: 100%;
+}
+
+.room-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Card Image */
+.room-card-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.room-card:hover .room-card-image {
+    transform: scale(1.05);
+}
+
+/* Card Content */
+.room-card-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.room-card-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.room-card-description {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+.room-card-price,
+.room-card-capacity {
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.booked-message {
+    color: red;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.view-details-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    border-radius: 5px;
+    text-decoration: none;
+    text-align: center;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.view-details-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .room-grid {
+        grid-template-columns: repeat(3, 1fr); /* 3 columns for tablets and medium screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .room-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns for mobile screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .room-grid {
+        grid-template-columns: 1fr; /* 1 column for very small screens */
+    }
+}
+
+</style>
+
+<div class="room-grid">
+    {% for room in rooms %}
+        <div class="room-card">
+            <img src="{{ room.image.url }}" alt="{{ room.get_room_type_display }}" class="room-card-image">
+            <div class="room-card-content">
+                <h2 class="room-card-title">{{ room.get_room_type_display }}</h2>
+                <p class="room-card-description">{{ room.description }}</p>
+                <p class="room-card-price">Price: <strong>KSh {{ room.price_per_night }}/night</strong></p>
+                <p class="room-card-capacity">Capacity: <strong>{{ room.capacity }} guests</strong></p>
+                
                 {% if room.is_booked %}
-                    <p color="Red"><strong>This room is already booked. Please choose another room.</strong></p>
+                    <p class="booked-message"><strong>This room is already booked. Please choose another room.</strong></p>
                 {% else %}
-                    <a href="{% url 'room_details' room.id %}">View Details</a>
+                    <a href="{% url 'room_details' room.id %}" class="view-details-btn">View Details</a>
                 {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
-</body>
-</html>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+ {% endblock%}

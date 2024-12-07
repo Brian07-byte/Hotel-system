@@ -1,115 +1,293 @@
-/* about.css */
+#about-us {
+    background-color: #f4f4f9;
+    padding: 60px 0;
+    font-family: 'Arial', sans-serif;
+  }
 
-/* Custom Variables for Dark and Light Mode */
-:root {
-    --primary-color: #0A9396;
-    --secondary-color: #E9D8A6;
-    --background-color: #001219;
-    --text-color: #ffffff;
-    --glass-color: rgba(255, 255, 255, 0.1);
-    --border-glow: rgba(255, 255, 255, 0.4);
-}
-
-/* Light mode */
-@media (prefers-color-scheme: light) {
-    :root {
-        --background-color: #E9ECEF;
-        --text-color: #000000;
-        --glass-color: rgba(0, 0, 0, 0.1);
-        --border-glow: rgba(0, 0, 0, 0.2);
-    }
-}
-
-/* General Styling */
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: var(--background-color);
-    color: var(--text-color);
-    margin: 0;
-    padding: 0;
-}
-
-/* Section Layout */
-.about-section, .management-section {
-    padding: 50px;
-    text-align: center;
-}
-
-.about-section h2, .management-section h2 {
-    font-size: 2.5rem;
+  #about-us h2 {
+    font-size: 36px;
+    color: #333;
     margin-bottom: 20px;
-    color: var(--primary-color);
-}
+  }
 
-/* Glassmorphism for content containers */
-.about-content, .management-team {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    padding: 20px;
-    background: var(--glass-color);
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    border: 1px solid var(--border-glow);
-}
-
-/* Hotel Image */
-.hotel-image {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-    transition: transform 0.3s ease-in-out;
-}
-
-.hotel-image:hover {
-    transform: scale(1.05);
-}
-
-/* Manager Cards */
-.manager {
-    background: var(--glass-color);
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-    backdrop-filter: blur(8px);
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.manager:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-}
-
-/* Manager Images */
-.manager-image {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
+  #about-us h3 {
+    font-size: 28px;
+    color: #555;
+    margin-top: 20px;
     margin-bottom: 10px;
-    transition: box-shadow 0.3s ease;
-}
+  }
 
-.manager-image:hover {
-    box-shadow: 0 0 15px var(--border-glow);
-}
-
-/* Responsiveness */
-@media (max-width: 768px) {
-    .about-content, .management-team {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* Text styles */
-p {
-    font-size: 1.1rem;
+  #about-us p {
+    font-size: 16px;
+    color: #666;
     line-height: 1.6;
-}
+  }
 
-h3 {
-    color: var(--secondary-color);
-    font-size: 1.5rem;
-    margin-top: 10px;
-}
+  #about-us ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  #about-us ul li {
+    font-size: 16px;
+    color: #444;
+    margin-bottom: 10px;
+  }
+
+  #about-us ul li strong {
+    color: #2c3e50;
+  }
+
+  #about-us img {
+    max-width: 100%;
+    border-radius: 10px;
+  }
+
+  .btn-primary {
+    background-color: #1abc9c;
+    border-color: #1abc9c;
+    padding: 12px 30px;
+    color: white;
+    font-size: 16px;
+    text-transform: uppercase;
+    border-radius: 5px;
+    text-decoration: none;
+  }
+
+  .btn-primary:hover {
+    background-color: #16a085;
+    border-color: #16a085;
+     /* General Styling for the Hero Section */
+  .hero-section {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* Full viewport height */
+    overflow: hidden;
+  }
+
+  .carousel-inner {
+    height: 100%;
+  }
+
+  .carousel-item {
+    position: relative;
+    height: 100%;
+  }
+
+  /* Hero Image Styling */
+  .hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  /* Color Overlay Styling (With Transparency) */
+  .color-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    transition: background 0.5s ease;
+  }
+
+  /* Text Overlay Styling */
+  .text-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: center;
+    z-index: 2;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* Add a shadow for better readability */
+    line-height: 1.2;
+    max-width: 90%;
+  }
+
+  /* Styling for Carousel Controls */
+  .carousel-control-prev,
+  .carousel-control-next {
+    color: white;
+    font-size: 2rem;
+    z-index: 3; /* Ensure the controls are above the image */
+  }
+
+  .carousel-control-prev-icon,
+  .carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    border-radius: 50%;
+  }
+
+  .carousel-control-prev:hover,
+  .carousel-control-next:hover {
+    background-color: rgba(0, 0, 0, 0.7); /* Darker background on hover */
+  }
+
+  /* Responsive Styling */
+  @media (max-width: 768px) {
+    .text-overlay {
+      font-size: 2rem; /* Smaller font on mobile devices */
+    }
+  }
+  }
+  .events-section {
+        padding: 60px 0;
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 40px;
+    }
+
+    .event-card {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .event-card:hover {
+        transform: translateY(-10px);
+    }
+
+    .event-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .event-card .card-body {
+        padding: 20px;
+    }
+
+    .event-card .card-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .event-card .event-date, .event-card .event-time {
+        font-size: 1rem;
+        color: #7f8c8d;
+    }
+
+    .btn-primary {
+        background-color: #3498db;
+        border-color: #3498db;
+    }
+
+    .btn-primary:hover {
+        background-color: #2980b9;
+        border-color: #2980b9;
+    }
+
+    .modal-header .btn-close {
+        background-color: #e74c3c;
+    }
+
+    .modal-header .btn-close:hover {
+        background-color: #c0392b;
+    }
+    .contact-us {
+        padding: 60px 0;
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 40px;
+    }
+
+    .contact-info h3, .contact-form h3 {
+        font-size: 1.75rem;
+        color: #2c3e50;
+        margin-bottom: 20px;
+    }
+
+    .contact-info p {
+        font-size: 1.1rem;
+        color: #34495e;
+    }
+
+    .contact-form .form-label {
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: #34495e;
+    }
+
+    .contact-form .form-control {
+        border-radius: 8px;
+        padding: 15px;
+        font-size: 1rem;
+    }
+
+    .contact-form button {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        font-size: 1.1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .contact-form button:hover {
+        background-color: #2980b9;
+    }
+
+    .social-links {
+        margin-top: 20px;
+    }
+
+    .social-links .social-icon {
+        font-size: 1.5rem;
+        margin-right: 15px;
+        color: #3498db;
+        transition: color 0.3s ease;
+    }
+
+    .social-links .social-icon:hover {
+        color: #2980b9;
+    }
+
+    .map-container {
+        margin-top: 40px;
+    }
+
+    .map-section iframe {
+        width: 100%;
+        border: 0;
+        border-radius: 8px;
+    }
+
+    .map-section h3 {
+        font-size: 1.5rem;
+        color: #2c3e50;
+        margin-bottom: 20px;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+        .contact-us .row {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .contact-info, .contact-form {
+            margin-bottom: 30px;
+        }
+
+        .contact-info p, .contact-form .form-control {
+            font-size: 1rem;
+        }
+    }

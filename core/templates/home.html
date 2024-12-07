@@ -1,151 +1,301 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}Home {% endblock %}
+
 {% block content %}
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="{% static 'css/hero.css' %}">
-
-<style>
-    nav.navbar {
-        position: sticky;
-        top: 0;
-        z-index: 1000; /* Ensure it stays above other elements */
-    }
-</style>
-
-<!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
-    <div class="container">
-        <!-- Logo/Brand -->
-        <a class="navbar-brand" href="{% url 'home' %}">
-            <img src="{% static 'images/logo1.webp' %}" alt="Logo" height="40">
-            Hotel Management System
-        </a>
-
-        <!-- Toggler for Mobile View -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+<link rel="stylesheet" href="{% static 'css/about.css' %}">
+<section class="hero-section">
+    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{% static 'images/p1.avif' %}" class="d-block w-100 hero-image" alt="Hotel 1">
+                <div class="color-overlay active" style="background: rgba(0, 255, 85, 0.5);"></div> <!-- Red Overlay -->
+                <div class="text-overlay" id="text1">Welcome to our luxurious hotel!</div>
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'images/p2.avif' %}" class="d-block w-100 hero-image" alt="Hotel 2">
+                <div class="color-overlay" style="background: rgba(0, 255, 0, 0.5);"></div> <!-- Green Overlay -->
+                <div class="text-overlay" id="text2">Experience a great adventure and treat.</div>
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'images/p3.avif' %}" class="d-block w-100 hero-image" alt="Hotel 3">
+                <div class="color-overlay" style="background: rgba(0, 0, 255, 0.5);"></div> <!-- Blue Overlay -->
+                <div class="text-overlay" id="text3">Your perfect getaway awaits you!</div>
+            </div>
+        </div>
+        <!-- Carousel Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
         </button>
-
-        <!-- Navbar Links -->
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <!-- Home -->
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
-                </li>
-                <!-- Rooms -->
-                <li class="nav-item">
-                    {% if user.is_authenticated %}
-                        <a class="nav-link" href="{% url 'login' %}">Rooms</a>
-                    {% else %}
-                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#authModal">Rooms</a>
-                    {% endif %}
-                </li>
-                <!-- Book Now -->
-                <li class="nav-item">
-                    <a class="nav-link btn btn-primary text-white px-4" href="{% url 'signup' %}">Book Now</a>
-                </li>
-                <!-- About -->
-                <li class="nav-item">
-                    <a class="nav-link" href="#about">About Us</a>
-                </li>
-                <!-- Events -->
-                <li class="nav-item">
-                    <a class="nav-link" href="#events">Events</a>
-                </li>
-                <!-- Contact -->
-                <li class="nav-item">
-                    <a class="nav-link" href="#contact">Contact Us</a>
-                </li>
-                <!-- Login/Register -->
-                <li class="nav-item">
-                    <a class="nav-link btn btn-outline-light" href="{% url 'login' %}">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link btn btn-success ms-2 text-white" href="{% url 'signup' %}">Sign Up</a>
-                </li>
-            </ul>
-        </div>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
     </div>
-</nav>
-
-<!-- Hero Section with Carousel -->
-<section id="carouselHero" class="carousel slide hero-section" data-bs-ride="carousel">
-    <div class="carousel-inner">
-        <!-- First Slide -->
-        <div class="carousel-item active">
-            <img src="{% static 'images/hotel1.avif' %}" class="d-block w-100 hero-image" alt="Hotel Image 1">
-            <div class="carousel-caption d-none d-md-block">
-                <div class="color-overlay" style="background: rgba(0, 255, 85, 0.5);"></div>
-                <h5>Welcome to our luxurious hotel!</h5>
-                <p>Enjoy a premium experience in comfort and style.</p>
-            </div>
-        </div>
-        <!-- Second Slide -->
-        <div class="carousel-item">
-            <img src="{% static 'images/hotel1.avif' %}" class="d-block w-100 hero-image" alt="Hotel Image 2">
-            <div class="carousel-caption d-none d-md-block">
-                <div class="color-overlay" style="background: rgba(0, 255, 0, 0.5);"></div>
-                <h5>Experience a great adventure and treat.</h5>
-                <p>Discover new possibilities in travel and comfort.</p>
-            </div>
-        </div>
-        <!-- Third Slide -->
-        <div class="carousel-item">
-            <img src="{% static 'images/hotel1.avif' %}" class="d-block w-100 hero-image" alt="Hotel Image 3">
-            <div class="carousel-caption d-none d-md-block">
-                <div class="color-overlay" style="background: rgba(0, 0, 255, 0.5);"></div>
-                <h5>Your perfect getaway awaits you!</h5>
-                <p>Find relaxation, fun, and luxury all in one place.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Carousel Controls -->
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselHero" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselHero" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
 </section>
 
-<!-- JavaScript for Bootstrap -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap 5.3 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- JavaScript for Carousel Functionality -->
+<!-- Custom JavaScript for text overlay animation -->
 <script>
-    // Bootstrap carousel auto-slide configuration
-    var myCarousel = document.querySelector('#carouselHero');
-    var carousel = new bootstrap.Carousel(myCarousel, {
-        interval: 3000, // Auto-slide every 3 seconds
-        wrap: true      // Continues to loop back to the first item
-    });
+    const textOverlays = [
+        document.getElementById('text1'),
+        document.getElementById('text2'),
+        document.getElementById('text3')
+    ];
 
-    // Adding event listeners for manual controls
-    var prevButton = document.querySelector('.carousel-control-prev');
-    var nextButton = document.querySelector('.carousel-control-next');
+    const sentences = [
+        "Welcome to our luxurious hotel!",
+        "Experience a great adventure and treat.",
+        "Your perfect getaway awaits you!"
+    ];
 
-    prevButton.addEventListener('click', function() {
-        carousel.prev(); // Move to the previous slide
-    });
+    function typeSentence(sentence, textElement) {
+        let wordIndex = 0;
+        textElement.textContent = ''; // Clear previous text
+        const words = sentence.split(' ');
 
-    nextButton.addEventListener('click', function() {
-        carousel.next(); // Move to the next slide
-    });
+        const typeNextWord = () => {
+            if (wordIndex < words.length) {
+                textElement.textContent += words[wordIndex] + ' ';
+                wordIndex++;
+                setTimeout(typeNextWord, 600); // Adjust the speed of word appearance here
+            }
+        };
+        typeNextWord();
+    }
 
-    // Optional: Pausing auto-slide when hovering over the carousel
-    myCarousel.addEventListener('mouseenter', function() {
-        carousel.pause(); // Pause on mouse enter
-    });
+    // Initialize the first sentence animation
+    typeSentence(sentences[0], textOverlays[0]);
 
-    myCarousel.addEventListener('mouseleave', function() {
-        carousel.cycle(); // Resume auto-slide on mouse leave
+    // Listen for the carousel's slide event to trigger text change
+    const carousel = document.getElementById('heroCarousel');
+    carousel.addEventListener('slide.bs.carousel', (event) => {
+        const index = event.to; // Get the index of the next slide
+        typeSentence(sentences[index], textOverlays[index]);
     });
 </script>
+<!-- ABOUT us-->
+<section id="aboutus" class="aboutus">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+            <img src="{% static 'images/hotel2.jpeg' %}" alt="Yetu Hotel Entrance" class="img-fluid" />
+        </div>
+        <div class="col-md-6">
+          <h2>Welcome to Yetu Hotel</h2>
+          <p>
+            At Yetu Hotel, we blend luxury with comfort to create an unforgettable experience. Whether you're here for business, relaxation, or an adventure, we offer a unique atmosphere that meets the needs of every traveler. Our carefully curated services and amenities are designed to provide maximum satisfaction during your stay.
+          </p>
+          <h3>Our Unique Features</h3>
+          <ul>
+            <li><strong>Exclusive Rooms:</strong> Each room is designed to provide a home away from home, with state-of-the-art amenities and elegant decor. Choose from deluxe suites, executive rooms, and our signature penthouse suite.</li>
+            <li><strong>Spa & Wellness:</strong> Pamper yourself in our luxurious spa with rejuvenating treatments, a sauna, and steam room, ensuring that you leave feeling refreshed and revitalized.</li>
+            <li><strong>Gourmet Dining:</strong> Our in-house restaurant offers a diverse range of dishes, from international cuisines to locally inspired gourmet meals prepared by top chefs.</li>
+            <li><strong>State-of-the-Art Conference Facilities:</strong> Business travelers will appreciate our fully equipped meeting rooms and conference halls, perfect for meetings, events, and seminars.</li>
+            <li><strong>Eco-Friendly Initiatives:</strong> At Yetu, we care about sustainability. Our green practices include energy-efficient systems, waste reduction programs, and locally sourced organic products for both our kitchen and spa.</li>
+            <li><strong>24/7 Concierge Service:</strong> Our dedicated concierge team is available around the clock to assist you with any request, whether it’s booking a local tour or arranging a private driver.</li>
+          </ul>
+          <h3>Why Choose Yetu Hotel?</h3>
+          <p>
+            As the premier destination for discerning travelers, we pride ourselves on offering personalized services that go beyond your expectations. From the moment you step into the lobby, you will feel the warmth of hospitality and attention to detail. Our team is dedicated to ensuring your stay is seamless and memorable.
+          </p>
+          <a href="" class="btn btn-primary">rooms</a>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- EVENTS-->
+  </section>
+  <section class="events-section" id="events">
+    <div class="container">
+        <h2 class="section-title text-center">Upcoming Events at Yetu Hotel</h2>
+        <div class="row">
+            <!-- Event Card 1 -->
+            <div class="col-md-4">
+                <div class="event-card">
+                    <img src="{% static 'images/music1.jpg' %}" class="card-img-top" alt="Event 1">
+                    <div class="card-body">
+                        <h5 class="card-title">Jazz Night</h5>
+                        <p class="card-text">Join us for a magical evening of live jazz music performed by renowned artists.</p>
+                        <p class="event-date">Date: 15th December 2024</p>
+                        <p class="event-time">Time: 7:00 PM - 10:00 PM</p>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal1">RSVP Now</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Event Card 2 -->
+            <div class="col-md-4">
+                <div class="event-card">
+                    <img src="{% static 'images/wine.webp' %}" class="card-img-top" alt="Event 2">
+                    <div class="card-body">
+                        <h5 class="card-title">Gala Dinner</h5>
+                        <p class="card-text">An elegant evening filled with fine dining, entertainment, and luxury.</p>
+                        <p class="event-date">Date: 22nd December 2024</p>
+                        <p class="event-time">Time: 6:00 PM - 11:00 PM</p>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal2">RSVP Now</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Event Card 3 -->
+            <div class="col-md-4">
+                <div class="event-card">
+                    <img src="{% static 'images/dinner.jpeg' %}" class="card-img-top" alt="Event 3">
+                    <div class="card-body">
+                        <h5 class="card-title">New Year Countdown Party</h5>
+                        <p class="card-text">Celebrate the arrival of the New Year with music, dancing, and excitement!</p>
+                        <p class="event-date">Date: 31st December 2024</p>
+                        <p class="event-time">Time: 9:00 PM - 12:30 AM</p>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal3">RSVP Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event Modals for Details -->
+        <!-- Modal 1 -->
+        <div class="modal fade" id="eventModal1" tabindex="-1" aria-labelledby="eventModalLabel1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="eventModalLabel1">Jazz Night - RSVP</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Join us for a magical evening of live jazz music performed by renowned artists.</p>
+                        <p><strong>Date:</strong> 15th December 2024</p>
+                        <p><strong>Time:</strong> 7:00 PM - 10:00 PM</p>
+                        <form action="#" method="POST">
+                            <label for="name">Your Name:</label>
+                            <input type="text" id="name" name="name" class="form-control" required>
+                            <label for="email">Your Email:</label>
+                            <input type="email" id="email" name="email" class="form-control" required>
+                            <button type="submit" class="btn btn-primary mt-3">RSVP Now</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal 2 -->
+        <div class="modal fade" id="eventModal2" tabindex="-1" aria-labelledby="eventModalLabel2" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="eventModalLabel2">Gala Dinner - RSVP</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>An elegant evening filled with fine dining, entertainment, and luxury.</p>
+                        <p><strong>Date:</strong> 22nd December 2024</p>
+                        <p><strong>Time:</strong> 6:00 PM - 11:00 PM</p>
+                        <form action="#" method="POST">
+                            <label for="name">Your Name:</label>
+                            <input type="text" id="name" name="name" class="form-control" required>
+                            <label for="email">Your Email:</label>
+                            <input type="email" id="email" name="email" class="form-control" required>
+                            <button type="submit" class="btn btn-primary mt-3">RSVP Now</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal 3 -->
+        <div class="modal fade" id="eventModal3" tabindex="-1" aria-labelledby="eventModalLabel3" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="eventModalLabel3">New Year Countdown Party - RSVP</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Celebrate the arrival of the New Year with music, dancing, and excitement!</p>
+                        <p><strong>Date:</strong> 31st December 2024</p>
+                        <p><strong>Time:</strong> 9:00 PM - 12:30 AM</p>
+                        <form action="#" method="POST">
+                            <label for="name">Your Name:</label>
+                            <input type="text" id="name" name="name" class="form-control" required>
+                            <label for="email">Your Email:</label>
+                            <input type="email" id="email" name="email" class="form-control" required>
+                            <button type="submit" class="btn btn-primary mt-3">RSVP Now</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Contuct us-->
+</section>
+<section class="contactus" id="contactus">
+    <div class="container">
+        <h2 class="section-title text-center">Contact Us</h2>
+
+        <!-- Contact Details Section -->
+        <div class="row">
+            <!-- Hotel Address & Info -->
+            <div class="col-md-6">
+                <div class="contact-info">
+                    <h3>Our Location</h3>
+                    <p><strong>Yetu Hotel</strong></p>
+                    <p>123 Luxury Road, Nairobi, Kenya</p>
+                    <p>Phone: +254 123 456 789</p>
+                    <p>Email: <a href="mailto:info@yetu-hotel.com">info@yetu-hotel.com</a></p>
+                    <p>Hours: 24/7</p>
+
+                    <div class="social-links">
+                        <a href="#" class="social-icon" target="_blank"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="social-icon" target="_blank"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="social-icon" target="_blank"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="social-icon" target="_blank"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="col-md-6">
+                <div class="contact-form">
+                    <h3>Send Us a Message</h3>
+                    <form action="#" method="POST">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Your Name</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Your Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">Subject</label>
+                            <input type="text" class="form-control" id="subject" name="subject" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Message</label>
+                            <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Google Map Section -->
+        <div class="map-section">
+            <h3 class="text-center">Find Us Here</h3>
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3114.639599537277!2d36.81722321540346!3d-1.2920656359293265!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f1c1bd5c441b3%3A0x1a5433ab8e0106a2!2sNairobi%20Kenya!5e0!3m2!1sen!2s!4v1612345612345" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
 
 {% endblock %}

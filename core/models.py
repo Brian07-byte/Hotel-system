@@ -64,15 +64,6 @@ class Payment(models.Model):
         return f'Payment {self.id} for Booking {self.booking.id} - Status: {self.payment_status}'
 
 
-class ChatMessage(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    message = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f'{self.user.username}: {self.message[:20]}...'
-
-
 class Billing(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     booking = models.ForeignKey('Booking', on_delete=models.CASCADE)
@@ -84,11 +75,21 @@ class Billing(models.Model):
         return f"{self.user.username} - KSh {self.amount} - {self.status}"
 
 
-class Message(models.Model):
+class Receipt(models.Model):  # This class should be outside the Billing class
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    message = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    is_admin = models.BooleanField(default=False)
+    booking = models.ForeignKey(Booking, on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    issued_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.user.username}: {self.message[:20]}'
+        return f"Receipt for {self.user.username}"
+
+
+class ChatMessage(models.Model):  # This class should be outside the Billing class
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    admin_message = models.TextField()
+    user_message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Chat with {self.user.username}"

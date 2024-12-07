@@ -1,13 +1,5 @@
-{% extends 'base.html'%}
+
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Room - {{ room.get_room_type_display }}</title>
-    <link rel="stylesheet" href="{% static 'css/booking.css' %}">  <!-- Link to your CSS file -->
-    {% block content %}
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -93,8 +85,7 @@
             }
         }
     </style>
-</head>
-<body>
+
 
     <div class="container">
         <h2>Book {{ room.get_room_type_display }}</h2>
@@ -171,6 +162,4 @@
             }
         });
     </script>
-    {% endblock%}
-</body>
-</html>
+    
